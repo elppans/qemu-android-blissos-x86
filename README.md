@@ -5,6 +5,7 @@
 Esta configuração depende do pacote [qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86)  
 Será baixado o arquivo ISO do site oficial e será descompactado em uma pasta específica.  
 Para descompactar um arquivo ISO sem ter que montá-lo, deve ter o pacote [p7zip](https://archlinux.org/packages/extra/x86_64/p7zip/) instalado.  
+Foi utilizado o [QEMU versão 7.2.0-3](https://archlinux.org/packages/?sort=&q=qemu-system-x86) para a execução e testes do Android OS.  
 
 ### Versões do BlissOS:  
 
@@ -39,6 +40,11 @@ Se não quiser que seu Android use um arquivo **data.img**, crie uma pasta com o
 
 > DATA="$HOME/.config/android-x86/blissos/data"  
 
+Se for configurado a pasta `data` para ser usado no lugar de `data.img`, será usado o parâmetro `9p mode` para montar esta pasta como um dispositivo no Android, com isso o QEMU será executado com sudo ao iniciar o Script.  
+Se não quiser digitar a senha do sudo toda vez que executar o qemu-android, edite o arquivo `/etc/sudoers` e adicione esta linha:  
+
+> %wheel ALL=(ALL) NOPASSWD: /usr/bin/qemu-system-x86_64  
+
 Faça estes comandos para configurar o necessário para executar o BlissOS no QEMU:  
 
 ```
@@ -66,11 +72,17 @@ Se quiser criar um atalho .desktop para o comando, crie um arquivo em `~/.local/
 [Desktop Entry]
 Name=qemu-android-blissos
 Comment=Android-x86 environment via QEMU and VirGL
-Exec=$HOME/.config/android-x86/blissos/qemu-android-blissos gui
+Exec=/usr/bin/qemu-android-blissos gui
 Terminal=false
 Icon=qemu-android.png
 Type=Application
 Categories=Development;
+```
+
+Crie um link OU copie o Script para /usr/bin, para que seja executado (Eu prefiro fazer o link):  
+
+```
+ln -sf $HOME/.config/android-x86/PrimeOS/qemu-android-blissos /usr/bin/qemu-android-blissos
 ```
 
 Após a configuração, basta clicar no ícone que aparecerá em seu menú.  
