@@ -37,7 +37,7 @@ Um exemplo, se quer um arquivo menor, como 20 GB, deve fazer um calculo (1024 \*
 
 Se não quiser que seu Android use um arquivo **data.img**, crie uma pasta com o nome `data` e crie a variável:  
 
-> DATA="$HOME/.config/android-x86/blissos/data  
+> DATA="$HOME/.config/android-x86/blissos/data"  
 
 Faça estes comandos para configurar o necessário para executar o BlissOS no QEMU:  
 
