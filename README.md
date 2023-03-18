@@ -2,6 +2,8 @@
 
 ## Configurando [BlissOS](https://blissos.org/) com [qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86):
 
+### Dependências
+
 Esta configuração depende do pacote [qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86)  
 Será baixado o arquivo ISO do site oficial e será descompactado em uma pasta específica.  
 Para descompactar um arquivo ISO sem ter que montá-lo, deve ter o pacote [p7zip](https://archlinux.org/packages/extra/x86_64/p7zip/) instalado.  
@@ -24,6 +26,8 @@ https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.4-x86_64-OFF
 ## Baixando e configurando BlissOS:  
 
 Nesta configuração, será usado o BlissOS versão 14, mas pode fazer o mesmo procedimento para a versão 15.  
+* Por algum motivo, o BlissOS 14 na versão de **11.03.2023** está com `BOOT INFINITO`, então por enquanto é melhor usar a versão de **01.02.2023**.
+* BlissOS 15, da versão de **08.03.2023** (**15.8.5**), funcionou normalmente e na minha opinião, é melhor que a versão 14.
 * Para usar o BlissOS 15 e quiser usar o aplicativo `Taskbar for BlissOS`, deve editar o arquivo `config`, ativar e configurar a variável RAM para usar no mínimo 3 GB RAM (Em MB):  
 
 > RAM=3072  
@@ -44,6 +48,9 @@ Se for configurado a pasta `data` para ser usado no lugar de `data.img`, será u
 Se não quiser digitar a senha do sudo toda vez que executar o qemu-android, edite o arquivo `/etc/sudoers` e adicione esta linha:  
 
 > %wheel ALL=(ALL) NOPASSWD: /usr/bin/qemu-system-x86_64  
+
+* PS.: Diferente do [PrimeOS](https://www.primeos.in/) o BlissOS, NÃO funcionou bem com a variável em diretório, ficou com o `BOOT INFINITO`.
+Mas fiz uma atualização no Script para usar o arquivo data.img de forma comprimida. Quando terminar os testes e organizar, irei upar a atualização do Script.
 
 Faça estes comandos para configurar o necessário para executar o BlissOS no QEMU:  
 
