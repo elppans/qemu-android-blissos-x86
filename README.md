@@ -57,11 +57,12 @@ Faça estes comandos para configurar o necessário para executar o BlissOS no QE
 ```
 mkdir -p ~/.config/android-x86/blissos
 cd ~/Downloads
-wget -c https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso
-7z x Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso -o $HOME/.config/android-x86/blissos initrd.img kernel system.sfs
+curl -JOLk https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso
+7z x Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso initrd.img kernel system.sfs
+mv initrd.img kernel system.sfs ~/.config/android-x86/blissos
 cd ~/.config/android-x86/blissos
-wget -c https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/config
-wget -c https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos
+curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/config
+curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos
 chmod +x qemu-android-blissos
 truncate -s 2048K ramdisk.img
 ```
@@ -83,13 +84,13 @@ Exec=/usr/bin/qemu-android-blissos gui
 Terminal=false
 Icon=qemu-android.png
 Type=Application
-Categories=Development;
+Categories=Utilities;
 ```
 
 Crie um link OU copie o Script para /usr/bin, para que seja executado (Eu prefiro fazer o link):  
 
 ```
-ln -sf $HOME/.config/android-x86/PrimeOS/qemu-android-blissos /usr/bin/qemu-android-blissos
+sudo ln -sf $HOME/.config/android-x86/blissos/qemu-android-blissos /usr/bin/qemu-android-blissos
 ```
 
 Após a configuração, basta clicar no ícone que aparecerá em seu menú.  
