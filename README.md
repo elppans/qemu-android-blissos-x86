@@ -58,7 +58,7 @@ Faça estes comandos para configurar o necessário para executar o BlissOS no QE
 mkdir -p ~/.config/android-x86/blissos
 cd ~/Downloads
 wget -c https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso
-7z x Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso -o$HOME/.config/android-x86/blissos initrd.img kernel system.sfs
+7z x Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso -o $HOME/.config/android-x86/blissos initrd.img kernel system.sfs
 cd ~/.config/android-x86/blissos
 wget -c https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/config
 wget -c https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos
