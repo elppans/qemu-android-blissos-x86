@@ -30,12 +30,14 @@ nope() {
 	exit 1
 }
 
+# Config file. Default is "$HOME/.config/android-x86/config"
+CONFIG="$HOME/.config/android-x86/blissos/config"
 
 # Check for config file, source
 if [ -e $HOME/.config/android-x86/blissos/config ]; then
 	. $HOME/.config/android-x86/blissos/config
 else
-	nope "Copy /usr/share/android-x86/blissos/config to ${HOME}/.config/android-x86 and modify.  It explains things."
+	nope "Copy /usr/share/android-x86/config to ${HOME}/.config/android-x86 and modify.  It explains things."
 fi
 
 # Set meaningful defaults
@@ -43,21 +45,22 @@ IN_SUDO=0
 IN_TERMINAL=0
 RAM=${RAM:-2048}
 CORES=${CORES:-2}
-DATA=${DATA:-"${HOME}/.config/android-x86/blissos/data.img"}
+DATA=${DATA:-"${HOME}/.config/android-x86/data.img"}
 DATASIZE=${DATASIZE:-2048}
 CPU=${CPU:-"host"}
 NETPORT=${NETPORT:-47000}
 # TODO figure out why GTK doesn't work on all my machines.  Might obviate the need to URXVT for serial console
-VGALINE=${VGALINE:-"-device virtio-vga-gl -display sdl,gl=on"}
+VGALINE=${VGALINE:-"-device virtio-vga-gl -display sdl,gl=on"} # Display 'sdl' is not available. Instlar pacote qemu-ui-sdl
 
 # Test for system images:
 # TODO add ability for r/w system image
-SYSTEMIMG=${SYSTEMIMG:-"/usr/share/android-x86/blissos/system.sfs"}
-INITRD=${INITRD:-"/usr/share/android-x86/blissos/initrd.img"}
-RAMDISK=${RAMDISK:-"/usr/share/android-x86/blissos/ramdisk.img"}
-KERNEL=${KERNEL:-"/usr/share/android-x86/blissos/kernel"}
+SYSTEMIMG=${SYSTEMIMG:-"/usr/share/android-x86/system.sfs"}
+INITRD=${INITRD:-"/usr/share/android-x86/initrd.img"}
+KERNEL=${KERNEL:-"/usr/share/android-x86/kernel"}
+RAMDISK=${RAMDISK:-"/usr/share/android-x86/ramdisk.img"}
+RAMDISKSIZE=${RAMDISKSIZE:-2048}
 
-if [ ! -e $SYSTEMIMG ] || [ ! -e $INITRD ] || [ ! -e $RAMDISK ] || [ ! -e $KERNEL ]; then
+if [ ! -e $SYSTEMIMG ] || [ ! -e $INITRD ] || [ ! -e $KERNEL ]; then
 	nope "System images aren't installed.  Check your android-x86 package."
 fi
 
@@ -68,6 +71,21 @@ if [ ! -x $QEMU ]; then
 	nope "Please install the 'qemu' package to run Android-x86."
 fi
 
+# RAMDisk image
+if [ $RAMDISK == "none" ]; then
+	RAMDISK_QEMULINE=""
+else
+	if [ ! -e $RAMDISK ]; then
+		if [ $GUI -eq 1 ]; then
+			$URXVT -title "Android-x86 Ramdisk Image Create" -e \
+				bash -c "/usr/bin/truncate -s ${RAMDISKSIZE}K $RAMDISK && \
+					echo Ramdisk Image $RAMDISK created."
+		fi
+	fi
+	RAMDISK_QEMULINE="-drive index=1,if=virtio,id=ramdisk,file=${RAMDISK},format=raw,readonly=on"
+fi
+
+# Data partition
 if [ $DATA == "none" ]; then
 	DATA_QEMULINE=""
 	DATA_CMDLINE=""
@@ -99,7 +117,8 @@ else
 		nope "Data partition $DATA isn't writeable."
 	fi
 
-	DATA_QEMULINE="-drive index=2,if=virtio,id=data,file=${DATA},format=raw"
+	#DATA_QEMULINE="-drive index=2,if=virtio,id=data,file=${DATA},format=raw"
+	DATA_QEMULINE="-drive index=2,if=virtio,id=data,file=${DATA},format=raw,readonly=on"
 	DATA_CMDLINE="DATA=vdc"
 
 fi
@@ -139,20 +158,45 @@ do_qemu() {
 	DO_CMD+=$QEMU
 
 
-	exec $DO_CMD -enable-kvm \
-	-kernel $KERNEL \
-	-append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 RAMDISK=vdb $DATA_CMDLINE $VIDEO_CMDLINE" \
-	-initrd $INITRD \
-	-m $RAM -smp $CORES -cpu $CPU \
-	-device qemu-xhci,id=xhci0 -device usb-tablet,bus=xhci0.0 -machine vmport=off \
-	-device intel-hda -device hda-duplex \
-	-boot menu=on \
-	-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw,readonly \
-	-drive index=1,if=virtio,id=ramdisk,file=$RAMDISK,format=raw,readonly \
-	$NET_QEMULINE $DATA_QEMULINE $SERIAL_QEMULINE $VGALINE
+args=(
+	#"-enable-kvm"
+	##CPU
+    "-smp $CORES"
+    '-M q35'
+    "-m $RAM"
+    "-cpu $CPU"
+    "-accel kvm"
+    "-bios /usr/share/ovmf/x64/OVMF.fd"
+    ##GPU
+    "$VGALINE"
+    ##devices
+	#"-usb"
+    "-device qemu-xhci,id=xhci0 -device usb-tablet,bus=xhci0.0 -machine vmport=off"
+    #"-audiodev pa,id=snd0"
+    #"-device AC97,audiodev=snd0"
+    "-device intel-hda -device hda-duplex"
+    "-device virtio-tablet"
+    "-device virtio-keyboard"
+    ##net
+    "$NET_QEMULINE"
+    ##drives
+    "-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw,readonly=on"
+    "$RAMDISK_QEMULINE"
+    "$DATA_QEMULINE"
+    "-initrd $INITRD"
+    "-kernel $KERNEL"
+    ##misc
+    #"-monitor stdio"
+    "$SERIAL_QEMULINE"
+)
+
+exec $DO_CMD ${args[@]} \
+      -append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $DATA_CMDLINE $VIDEO_CMDLINE quiet DEBUG=0"
 }
 
 while [ $NETPORT -lt 48000 ]; do
 	do_qemu && break
 	let $NETPORT++
 done
+
+

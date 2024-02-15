@@ -1,5 +1,5 @@
-# RAM in megabytes, defaults to 2048.
-RAM=3072
+# RAM in megabytes, defaults to 2048. (BlissOS min. 3072)
+RAM=4096
 
 # Number of CPU cores, defaults to 2.
 #CORES=2
@@ -23,10 +23,27 @@ RAM=3072
 # Example:
 #DATA="none" # Save no data
 #DATA="/tmp/data.img" # Create a data file in /tmp. 
+DATA="$HOME/.config/android-x86/blissos/data.img" # Create a data file in local custom
+#DATA="$HOME/.config/android-x86/blissos/data" # Create a data dir in local custom (will only work for ext4 filesystems).
 
 # Data partition size in megabytes.  Only used on creation of a partition image.
 # defaults to 2048.
-DATASIZE=61440
+# custom configuration for BlissOS 12048 (11,8G)
+DATASIZE=12048
+
+# Ramdisk image location.
+# A temporary filesystem image used to load essential scripts and configurations into RAM during boot-up.
+# If a file is specified it will be a raw image and created if it does not
+# exist.  By default, it will create a file at $HOME/.config/android-x86/ramdisk.img
+# ramdisk.img is not used in BlissOS Android 10+
+# If set to "none", no ramdisk image will be set.
+# Example:
+#RAMDISK="none" # Does not use ramdisk image
+RAMDISK="$HOME/.config/android-x86/blissos/ramdisk.img" # Create a image file in local custom
+
+# Ramdisk image size in kilobytes.  Only used on creation of a ramdisk image.
+# defaults to 2048.
+#RAMDISKSIZE=4096
 
 # Note: right now the only thing that's working right now with VirGL on machines tested
 # is SDL with an external serial0.   GTK shows the serial but no video, SDL shows
@@ -50,10 +67,10 @@ SERIAL="mon:stdio" # console on terminal or in urxvt if gui mode.
 # the tested machines, only SDL.
 # Example (default):
 #VGALINE="-vga virtio -display sdl,gl=on"
+VGALINE="-device virtio-vga-gl,edid=on -display sdl,gl=on,show-cursor=true"
 
 # Custom for r/w system images:
 SYSTEMIMG="$HOME/.config/android-x86/blissos/system.sfs"
 INITRD="$HOME/.config/android-x86/blissos/initrd.img"
-RAMDISK="$HOME/.config/android-x86/blissos/ramdisk.img"
 KERNEL="$HOME/.config/android-x86/blissos/kernel"
 
