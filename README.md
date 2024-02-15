@@ -1,6 +1,6 @@
 # qemu-android-blissos-x86 no Archlinux
 
-## Configurando [BlissOS](https://blissos.org/) com [qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86):
+### Configurando [BlissOS](https://blissos.org/) com [qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86):
 
 ### Dependências
 
@@ -9,16 +9,61 @@ Será baixado o arquivo ISO do site oficial e será descompactado em uma pasta e
 Para descompactar um arquivo ISO sem ter que montá-lo, deve ter o pacote [p7zip](https://archlinux.org/packages/extra/x86_64/p7zip/) instalado.  
 Foi utilizado o [QEMU versão 7.2.0-3](https://archlinux.org/packages/?sort=&q=qemu-system-x86) para a execução e testes do Android OS.  
 
-### Versões do BlissOS:  
+## Versões do BlissOS:  
 
 * Stock ou Vanilla - Normalmente, os barebones, aplicativos mínimos adicionado. Perfeito para testes de produtos  
 * FOSS - Inclui código aberto e gratuito soluções de aplicativos e lojas de aplicativos ( Aurora Droid para aplicativos de código aberto de repos de F-Droid e Aurora Store para acessar o Google Jogar biblioteca de aplicativos )  
 * Gapps/GMS - Inclui o Google Play Services ( Conjunto mínimo de aplicativos, comparável a Pico / Nano )  
 Para mais informações, acesse o [site oficial, Downloads](https://blissos.org/index.html#download)  
 
-### [BlissOS BETA](https://sourceforge.net/projects/blissos-dev/files/Beta/)
+## [BlissOS (LANÇAMENTOS)](https://blissos.org/index.html#download)  
 
-Lista dos Links das **últimas** versões **BETA** do BlissOS que funcionam no qemu-android-cm-x86:  
+### Bliss OS 14.x (Android 11):  
+
+As compilações do Bliss OS 14.x são baseadas no Android 11, essas compilações são estáveis e podem ser usadas como driver diário.  
+
+>[Bliss OS 14.x (FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS14/FOSS/Generic/)  
+[Bliss OS 14.x (OpenGApps)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS14/OpenGApps/Generic/)  
+
+As compilações Go têm como alvo dispositivos x86_64-v2 de baixo custo.  
+
+>[Bliss OS 14.x (GO, FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS14/FOSS/Go/)  
+[Bliss OS 14.x (GO, OpenGApps)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS14/OpenGApps/Go/)  
+
+### Bliss OS 15.x (Android 12L):  
+
+As compilações do Bliss OS 15.x são baseadas no Android 12L, essas compilações são estáveis e podem ser usadas como driver diário.  
+
+>[Bliss OS 15.x (FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS15/FOSS/Generic/)  
+[Bliss OS 15.x (GAPPS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS15/Gapps/Generic/)  
+
+As compilações Go têm como alvo dispositivos x86_64-v2 de baixo custo.  
+
+>[Bliss OS 15.x (GO, FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS15/FOSS/Go/)  
+[Bliss OS 15.x (GO, GAPPS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS15/Gapps/Go/)  
+
+### Bliss OS 16.x (Android 13):  
+
+As compilações do Bliss OS 16.x são baseadas no Android 13. Essas compilações são beta, mas podem ser usadas como driver diário em muitos casos.  
+
+>[Bliss OS 16.x (FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS16/FOSS/Generic/)  
+[Bliss OS 16.x (GAPPS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS16/Gapps/Generic/)  
+
+As compilações Go têm como alvo dispositivos x86_64-v2 de baixo custo.  
+
+>[Bliss OS 16.x (GO, FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS16/FOSS/Go/)  
+[Bliss OS 16.x (GO, GAPPS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS16/Gapps/Go/)  
+
+### Bliss OS Zenith (Android 13):  
+
+As compilações do Bliss OS Zenith são baseadas no Android 13 com o Linux Stable Kernel mais recente. Essas compilações são inovadoras e não são recomendadas para uso diário.  
+
+>[Bliss OS Zenith (FOSS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOSZenith/FOSS/Generic/)  
+[Bliss OS Zenith (GAPPS)](https://sourceforge.net/projects/blissos-x86/files/Official/BlissOSZenith/Gapps/Generic/)  
+
+## [BlissOS BETA](https://sourceforge.net/projects/blissos-dev/files/Beta/)
+
+Lista dos Links das **últimas** versões **BETA** do BlissOS testadas que funcionam no qemu-android-cm-x86:  
 
 - Bliss OS 14.x (Android 11):  
 
