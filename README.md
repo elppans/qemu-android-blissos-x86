@@ -16,10 +16,11 @@ Foi utilizado o [QEMU versão 7.2.0-3](https://archlinux.org/packages/?sort=&q=q
 * Gapps/GMS - Inclui o Google Play Services ( Conjunto mínimo de aplicativos, comparável a Pico / Nano )  
 Para mais informações, acesse o [site oficial, Downloads](https://blissos.org/index.html#download)  
 
-### Links, BlissOS versão 14 (Android 11) e 15 (Android 12):  
+### Links, BlissOS versão 14 (Android 11) e 15 (Android 12) que funcionam no qemu-android-cm-x86:  
 
 > https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-opengapps-20230201.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso  
+https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230310.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.4-x86_64-OFFICIAL-gapps-20230201.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.4-x86_64-OFFICIAL-foss-20230201.iso  
 
