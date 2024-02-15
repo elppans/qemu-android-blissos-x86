@@ -16,13 +16,21 @@ Foi utilizado o [QEMU versão 7.2.0-3](https://archlinux.org/packages/?sort=&q=q
 * Gapps/GMS - Inclui o Google Play Services ( Conjunto mínimo de aplicativos, comparável a Pico / Nano )  
 Para mais informações, acesse o [site oficial, Downloads](https://blissos.org/index.html#download)  
 
-### Links, BlissOS versão 14 (Android 11) e 15 (Android 12) que funcionam no qemu-android-cm-x86:  
+### [BlissOS BETA](https://sourceforge.net/projects/blissos-dev/files/Beta/)
 
-> https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-opengapps-20230201.iso  
-https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso  
+Lista dos Links das **últimas* versões BETA do BlissOS que funcionam no qemu-android-cm-x86:  
+
+- Bliss OS 14.x (Android 11):  
+
+>https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-opengapps-20230201.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230310.iso  
-https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.4-x86_64-OFFICIAL-gapps-20230201.iso  
-https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.4-x86_64-OFFICIAL-foss-20230201.iso  
+https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-opengapps-20230311.iso  
+https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230624.iso  
+
+- Bliss OS 15.x (Android 12L):  
+
+>https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.5-x86_64-OFFICIAL-gapps-20230308.iso  
+https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.5-x86_64-OFFICIAL-foss-20230331.iso  
 
 ## Baixando e configurando BlissOS:  
 
