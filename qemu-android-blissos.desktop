@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=qemu-android-blissos
+Comment=Android-x86 environment via QEMU and VirGL
+Exec=/usr/bin/qemu-android-blissos gui
+Terminal=false
+Icon=qemu-android.png
+Type=Application
+Categories=Utilities;
