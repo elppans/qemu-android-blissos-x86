@@ -11,7 +11,7 @@ Foi utilizado o [QEMU versão 7.2.0-3](https://archlinux.org/packages/?sort=&q=q
 
 ### Versões do BlissOS:  
 
-* Stock - Normalmente, os barebones, aplicativos mínimos adicionado. Perfeito para testes de produtos  
+* Stock ou Vanilla - Normalmente, os barebones, aplicativos mínimos adicionado. Perfeito para testes de produtos  
 * FOSS - Inclui código aberto e gratuito soluções de aplicativos e lojas de aplicativos ( Aurora Droid para aplicativos de código aberto de repos de F-Droid e Aurora Store para acessar o Google Jogar biblioteca de aplicativos )  
 * Gapps/GMS - Inclui o Google Play Services ( Conjunto mínimo de aplicativos, comparável a Pico / Nano )  
 Para mais informações, acesse o [site oficial, Downloads](https://blissos.org/index.html#download)  
