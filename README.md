@@ -26,7 +26,8 @@ https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.4-x86_64-OFF
 ## Baixando e configurando BlissOS:  
 
 Nesta configuração, será usado o BlissOS versão 14, mas pode fazer o mesmo procedimento para a versão 15.  
-* Por algum motivo, o BlissOS 14 na versão de **11.03.2023** está com `BOOT INFINITO`, então por enquanto é melhor usar a versão de **01.02.2023**.
+* Por algum motivo o BlissOS 14.10, versão de **11.03.2023** está com `BOOT INFINITO`.
+* A última versão do BlissOS 14 que funciona no no qemu-android é a versão 14.10 com a data **10.03.2023**. É esta versão que será usada. Outra boa versão é o da data **01.02.2023**.  
 * BlissOS 15, da versão de **08.03.2023** (**15.8.5**), funcionou normalmente e na minha opinião, é melhor que a versão 14.
 * Para usar o BlissOS 15 e quiser usar o aplicativo `Taskbar for BlissOS`, deve editar o arquivo `config`, ativar e configurar a variável RAM para usar no mínimo 3 GB RAM (Em MB):  
 
@@ -35,8 +36,9 @@ Nesta configuração, será usado o BlissOS versão 14, mas pode fazer o mesmo p
 O arquivo `config` que será baixado, já está com a variável RAM configurado para usar 3 GB RAM na Máquina Virtual.  
 O Script e o arquivo **config** estão configurados para usar a pasta `~/.config/android-x86/blissos`, então deverá criar esta pasta antes de tudo.  
 Assim como toda **ISO Android OS versão 11** o **BlissOS** NÃO tem o arquivo `ramdisk.img`, então **DEVE** criar, ou o boot não funcionará.  
-Neste mesmo arquivo, também está ativo a variável `DATASIZE` para para que o Script crie um arquivo com o nome `data.img` com um tamanho de 64,4 GB. Nesta variável, antes de executar o Script pela 1ª vez, se quiser pode modificar o tamanho do arquivo a ser usado adicionando um outro número (em MB) para usar um arquivo maior ou menor.  
-Um exemplo, se quer um arquivo menor, como 20 GB, deve fazer um calculo (1024 \* 20). Então a variável deve ser modificada para ficar desta forma:  
+O Script foi atualizado pra criar automaticamente o arquivo ramdisk.img, portanto não é mais necessário criar na mão.  
+Neste mesmo arquivo, também está ativo a variável `DATASIZE` para para que o Script crie um arquivo com o nome `data.img` com um tamanho de 11,8 GB. Nesta variável, antes de executar o Script pela 1ª vez, se quiser pode modificar o tamanho do arquivo a ser usado adicionando um outro número (em MB) para usar um arquivo maior ou menor.  
+Um exemplo, se quer um arquivo com o tamanho de 20 GB, deve fazer um calculo (1024 \* 20). Então a variável deve ser modificada para ficar desta forma:  
 
 > DATASIZE=20480  
 
@@ -49,25 +51,23 @@ Se não quiser digitar a senha do sudo toda vez que executar o qemu-android, edi
 
 > %wheel ALL=(ALL) NOPASSWD: /usr/bin/qemu-system-x86_64  
 
-* PS.: Diferente do [PrimeOS](https://www.primeos.in/) o BlissOS, NÃO funcionou bem com a variável em diretório, ficou com o `BOOT INFINITO`.
-Mas fiz uma atualização no Script para usar o arquivo data.img de forma comprimida. Quando terminar os testes e organizar, irei upar a atualização do Script.
+* PS.: Diferente do [PrimeOS](https://www.primeos.in/) o BlissOS, NÃO funcionou bem com a variável em diretório, ficou com o `BOOT INFINITO`.  
+* O uso do diretório data funciona apenas em sistema de arquivos **EXT4**.  
+Mas fiz uma atualização no Script para usar o arquivo data.img de forma comprimida. Quando terminar os testes e organizar, irei upar a atualização do Script.  
 
-Faça estes comandos para configurar o necessário para executar o BlissOS no QEMU:  
+Faça estes comandos para configurar o BlissOS no qemu-android:  
 
 ```
 mkdir -p ~/.config/android-x86/blissos
 cd ~/Downloads
-curl -JOLk https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso
-7z x Bliss-v14.10-x86_64-OFFICIAL-foss-20230201.iso initrd.img kernel system.sfs
+curl -JOLk https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230310.iso
+7z x Bliss-v14.10-x86_64-OFFICIAL-foss-20230310.iso initrd.img kernel system.sfs
 mv initrd.img kernel system.sfs ~/.config/android-x86/blissos
 cd ~/.config/android-x86/blissos
 curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/config
 curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos
 chmod +x qemu-android-blissos
-truncate -s 2048K ramdisk.img
 ```
-
-
 Para testar, faça o comando:  
 
 ```
