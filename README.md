@@ -18,7 +18,7 @@ Para mais informações, acesse o [site oficial, Downloads](https://blissos.org/
 
 ### [BlissOS BETA](https://sourceforge.net/projects/blissos-dev/files/Beta/)
 
-Lista dos Links das **últimas* versões BETA do BlissOS que funcionam no qemu-android-cm-x86:  
+Lista dos Links das **últimas** versões **BETA** do BlissOS que funcionam no qemu-android-cm-x86:  
 
 - Bliss OS 14.x (Android 11):  
 
@@ -32,12 +32,14 @@ https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFI
 >https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.5-x86_64-OFFICIAL-gapps-20230308.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.5-x86_64-OFFICIAL-foss-20230331.iso  
 
+Todas as versões de ISO maiores do que estes testados **NÃO** funcionaram.  
+O Bliss OS 16.x (Android 13) **NÃO** funcionou, nenhuma das versões.  
+Todas as versões que não funcionam ficam com BOOT INFINITO ou não reconhecem o arquivo data.  
+
 ## Baixando e configurando BlissOS:  
 
 Nesta configuração, será usado o BlissOS versão 14, mas pode fazer o mesmo procedimento para a versão 15.  
-* Por algum motivo o BlissOS 14.10, versão de **11.03.2023** está com `BOOT INFINITO`.
-* A última versão do BlissOS 14 que funciona no no qemu-android é a versão 14.10 com a data **10.03.2023**. É esta versão que será usada. Outra boa versão é o da data **01.02.2023**.  
-* BlissOS 15, da versão de **08.03.2023** (**15.8.5**), funcionou normalmente e na minha opinião, é melhor que a versão 14.
+
 * Para usar o BlissOS 15 e quiser usar o aplicativo `Taskbar for BlissOS`, deve editar o arquivo `config`, ativar e configurar a variável RAM para usar no mínimo 3 GB RAM (Em MB):  
 
 > RAM=3072  
