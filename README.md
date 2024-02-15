@@ -36,7 +36,7 @@ Todas as versões de ISO maiores do que estes testados **NÃO** funcionaram.
 O Bliss OS 16.x (Android 13) **NÃO** funcionou, nenhuma das versões.  
 Todas as versões que não funcionam ficam com BOOT INFINITO ou não reconhecem o arquivo data.  
 
->Para usar a ÚLTIMA VERSÃO lançada do BlissOS 14 ou 15, atualize apenas os arquivos `**kernel**` e `**system.sfs**`
+>Para usar a ÚLTIMA VERSÃO lançada do BlissOS 14 ou 15, atualize apenas os arquivos **`kernel`** e **`system.sfs`**
 
 ## Sobre a configuracão do BlissOS:  
 
