@@ -36,24 +36,22 @@ Todas as versões de ISO maiores do que estes testados **NÃO** funcionaram.
 O Bliss OS 16.x (Android 13) **NÃO** funcionou, nenhuma das versões.  
 Todas as versões que não funcionam ficam com BOOT INFINITO ou não reconhecem o arquivo data.  
 
-## Baixando e configurando BlissOS:  
+## Sobre a configuracão do BlissOS:  
 
-Nesta configuração, será usado o BlissOS versão 14, mas pode fazer o mesmo procedimento para a versão 15.  
+Nesta configuração, será usado o BlissOS versão 14, mas pode fazer o mesmo procedimento para outras versões do BlissOS.  
+O Script já é configurado para usar 4 GB RAM por padrão, para usar mais memória deve editar o arquivo `config` e configurar a variável RAM.  
+Um exemplo para usar no 8 GB RAM (Em MB):  
 
-* Para usar o BlissOS 15 e quiser usar o aplicativo `Taskbar for BlissOS`, deve editar o arquivo `config`, ativar e configurar a variável RAM para usar no mínimo 3 GB RAM (Em MB):  
+> RAM=8192
 
-> RAM=3072  
 
-O arquivo `config` que será baixado, já está com a variável RAM configurado para usar 3 GB RAM na Máquina Virtual.  
 O Script e o arquivo **config** estão configurados para usar a pasta `~/.config/android-x86/blissos`, então deverá criar esta pasta antes de tudo.  
-Assim como toda **ISO Android OS versão 11** o **BlissOS** NÃO tem o arquivo `ramdisk.img`, então **DEVE** criar, ou o boot não funcionará.  
-O Script foi atualizado pra criar automaticamente o arquivo ramdisk.img, portanto não é mais necessário criar na mão.  
-Neste mesmo arquivo, também está ativo a variável `DATASIZE` para para que o Script crie um arquivo com o nome `data.img` com um tamanho de 11,8 GB. Nesta variável, antes de executar o Script pela 1ª vez, se quiser pode modificar o tamanho do arquivo a ser usado adicionando um outro número (em MB) para usar um arquivo maior ou menor.  
-Um exemplo, se quer um arquivo com o tamanho de 20 GB, deve fazer um calculo (1024 \* 20). Então a variável deve ser modificada para ficar desta forma:  
+Está configurado para usar por padrão, o arquivo `data.img` com um tamanho de 11,8 GB. Antes de executar o Script pela 1ª vez, pode modificar o tamanho do arquivo a ser usado adicionando um outro número (em MB) para usar um arquivo maior ou menor.  
+Um exemplo, para usar um arquivo com o tamanho de 20 GB, então a variável deve ser modificada para ficar desta forma:  
 
 > DATASIZE=20480  
 
-Se não quiser que seu Android use um arquivo **data.img**, crie uma pasta com o nome `data` e crie a variável:  
+Se não quiser que seu Android use um arquivo **data.img**, crie uma pasta com o nome `data` e crie a variável (Funciona apenas em sistema de arquivos EXT4):  
 
 > DATA="$HOME/.config/android-x86/blissos/data"  
 
@@ -62,9 +60,7 @@ Se não quiser digitar a senha do sudo toda vez que executar o qemu-android, edi
 
 > %wheel ALL=(ALL) NOPASSWD: /usr/bin/qemu-system-x86_64  
 
-* PS.: Diferente do [PrimeOS](https://www.primeos.in/) o BlissOS, NÃO funcionou bem com a variável em diretório, ficou com o `BOOT INFINITO`.  
-* O uso do diretório data funciona apenas em sistema de arquivos **EXT4**.  
-Mas fiz uma atualização no Script para usar o arquivo data.img de forma comprimida. Quando terminar os testes e organizar, irei upar a atualização do Script.  
+## Baixando e instalando o BlissOS
 
 Faça estes comandos para configurar o BlissOS no qemu-android:  
 
@@ -77,32 +73,10 @@ mv initrd.img kernel system.sfs ~/.config/android-x86/blissos
 cd ~/.config/android-x86/blissos
 curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/config
 curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos
+sudo ln -sf qemu-android-blissos /usr/bin/qemu-android-blissos
+sudo cp qemu-android-blissos /usr/share/applications
 chmod +x qemu-android-blissos
 ```
-Para testar, faça o comando:  
 
-```
-$HOME/.config/android-x86/blissos/qemu-android-blissos gui
-```
-
-Se quiser criar um atalho .desktop para o comando, crie um arquivo em `~/.local/share/applications` com o nome `qemu-android-blissos.desktop` com o seguinte conteúdo:  
-
-```
-[Desktop Entry]
-Name=qemu-android-blissos
-Comment=Android-x86 environment via QEMU and VirGL
-Exec=/usr/bin/qemu-android-blissos gui
-Terminal=false
-Icon=qemu-android.png
-Type=Application
-Categories=Utilities;
-```
-
-Crie um link OU copie o Script para /usr/bin, para que seja executado (Eu prefiro fazer o link):  
-
-```
-sudo ln -sf $HOME/.config/android-x86/blissos/qemu-android-blissos /usr/bin/qemu-android-blissos
-```
-
-Após a configuração, basta clicar no ícone que aparecerá em seu menú.  
+Para usar, basta clicar no ícone que aparecerá em seu menú.  
 
