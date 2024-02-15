@@ -57,8 +57,9 @@ VGALINE=${VGALINE:-"-device virtio-vga-gl -display sdl,gl=on"}
 # TODO add ability for r/w system image
 SYSTEMIMG=${SYSTEMIMG:-"/usr/share/android-x86/system.sfs"}
 INITRD=${INITRD:-"/usr/share/android-x86/initrd.img"}
-RAMDISK=${RAMDISK:-"/usr/share/android-x86/ramdisk.img"}
 KERNEL=${KERNEL:-"/usr/share/android-x86/kernel"}
+RAMDISK=${RAMDISK:-"/usr/share/android-x86/ramdisk.img"}
+RAMDISKSIZE=${RAMDISKSIZE:-2048}
 
 if [ ! -e $SYSTEMIMG ] || [ ! -e $INITRD ] || [ ! -e $KERNEL ]; then
 	nope "System images aren't installed.  Check your android-x86 package."
@@ -219,6 +220,7 @@ args=(
 
 exec $DO_CMD ${args[@]} \
 	  -append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE"
+	  #-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE"
 
 }
 
