@@ -61,6 +61,9 @@ KERNEL=${KERNEL:-"/usr/share/android-x86/kernel"}
 RAMDISK=${RAMDISK:-"/usr/share/android-x86/ramdisk.img"}
 RAMDISKSIZE=${RAMDISKSIZE:-2048}
 
+# Boot mode
+EFIBOOT=${EFIBOOT:-"-bios /usr/share/ovmf/x64/OVMF.fd"}
+
 if [ ! -e $SYSTEMIMG ] || [ ! -e $INITRD ] || [ ! -e $KERNEL ]; then
 	nope "System images aren't installed.  Check your android-x86 package."
 fi
@@ -70,6 +73,14 @@ fi
 QEMU="/usr/bin/qemu-system-x86_64"
 if [ ! -x $QEMU ]; then
 	nope "Please install the 'qemu' package to run Android-x86."
+fi
+
+# Boot EFI, In Arch, depend extra/edk2-ovmf
+if [ "$EFIBOOT" == "none" ]; then
+	EFIBOOT=""
+	echo "..."
+else
+	echo "..."
 fi
 
 # RAMDisk image
@@ -193,7 +204,7 @@ args=(
     '-M q35'
     "-m $RAM"
     "-cpu $CPU"
-    "-bios /usr/share/ovmf/x64/OVMF.fd" # Boot EFI, In Arch, depend extra/edk2-ovmf
+    "$EFIBOOT"
     ##GPU
     "$VGALINE"
     ##devices

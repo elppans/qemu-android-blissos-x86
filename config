@@ -13,6 +13,13 @@ RAM=4096
 # "video=" string to pass to the kernel. Defaults to no string set.
 #VIDEO="1280x720x32"
 
+# EFI Boot
+#Is needed to tell Qemu to boot using UEFI,
+#which is necessary as right now there is a bug that prevents android-generic based roms from being installed when in legacy mode.
+#It is important to note that the location of this can vary depending on the host OS.
+#EFIBOOT="none"
+#EFIBOOT="-bios /usr/share/ovmf/x64/OVMF.fd"
+
 # Data partition location.
 # If a file is specified it will be a raw image and created if it does not
 # exist.  By default, it will create a file at $HOME/.config/android-x86/data.img
@@ -29,7 +36,7 @@ DATA="$HOME/.config/android-x86/blissos/data.img" # Create a data file in local 
 # Data partition size in megabytes.  Only used on creation of a partition image.
 # defaults to 2048.
 # custom configuration for BlissOS 12048 (11,8G)
-DATASIZE=12048
+DATASIZE=30720
 
 # Ramdisk image location.
 # A temporary filesystem image used to load essential scripts and configurations into RAM during boot-up.
@@ -69,7 +76,7 @@ SERIAL="mon:stdio" # console on terminal or in urxvt if gui mode.
 #VGALINE="-vga virtio -display sdl,gl=on"
 VGALINE="-device virtio-vga-gl,edid=on -display sdl,gl=on,show-cursor=true"
 
-# Custom for r/w system images:
+# Custom for r/w system images for BlissOS:
 SYSTEMIMG="$HOME/.config/android-x86/blissos/system.sfs"
 INITRD="$HOME/.config/android-x86/blissos/initrd.img"
 KERNEL="$HOME/.config/android-x86/blissos/kernel"
