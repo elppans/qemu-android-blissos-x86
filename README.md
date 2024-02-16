@@ -127,3 +127,9 @@ chmod +x qemu-android-blissos
 
 Para usar, basta clicar no ícone que aparecerá em seu menú.  
 
+- Links úteis
+
+https://docs.blissos.org/installation/install-in-a-virtual-machine/advanced-qemu-config/
+https://github.com/BlissRoms-x86/support
+https://github.com/royalgraphx/SideswipeOnQEMU/tree/main
+
