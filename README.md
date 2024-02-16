@@ -69,8 +69,6 @@ Lista dos Links das **últimas** versões **BETA** do BlissOS testadas que funci
 
 >https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-opengapps-20230201.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230310.iso  
-https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-opengapps-20230311.iso  
-https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFICIAL-foss-20230624.iso  
 
 - Bliss OS 15.x (Android 12L):  
 
@@ -81,7 +79,9 @@ Todas as versões de ISO maiores do que estes testados **NÃO** funcionaram.
 O Bliss OS 16.x (Android 13) **NÃO** funcionou, nenhuma das versões.  
 Todas as versões que não funcionam ficam com BOOT INFINITO ou não reconhecem o arquivo data.  
 
->Para usar a ÚLTIMA VERSÃO lançada do BlissOS 14 ou 15, atualize apenas os arquivos **`kernel`** e **`system.sfs`**
+>Para usar a ÚLTIMA VERSÃO lançada do BlissOS, atualize apenas os arquivos **`kernel`** e **`system.sfs`**  
+**BlissOS 14.10.1 (13.01.2024) funcionou normalmente com este tipo de atualização**  
+**BlissOS 15.9 (14.01.2024) só funciona no 1º boot. A partir do 2º boot, ocorre "Boot Infinito"**  
 
 ## Sobre a configuracão do BlissOS:  
 
