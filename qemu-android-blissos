@@ -243,6 +243,9 @@ fi
 		# BlissOS QEMU/KVM DEBUG:
 		#-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE" quiet DEBUG=2"
 
+# Observation:
+# I tested booting all the most current versions at the moment (2024.02.18) with the Generic Android options and they all worked.
+
 do_qemu() {
 
 	if [ -z $BRIDGE ]; then
