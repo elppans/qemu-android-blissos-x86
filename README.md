@@ -4,10 +4,12 @@
 
 ### Dependências
 
-Esta configuração depende do pacote [qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86)  
-Será baixado o arquivo ISO do site oficial e será descompactado em uma pasta específica.  
-Para descompactar um arquivo ISO sem ter que montá-lo, deve ter o pacote [p7zip](https://archlinux.org/packages/extra/x86_64/p7zip/) instalado.  
-Foi utilizado o [QEMU versão 7.2.0-3](https://archlinux.org/packages/?sort=&q=qemu-system-x86) para a execução e testes do Android OS.  
+[qemu-android-cm-x86](https://aur.archlinux.org/packages/qemu-android-cm-x86). Ambiente Android-x86 via QEMU e VirGL.   
+[qemu-system-x86](https://archlinux.org/packages/?sort=&q=qemu-system-x86). Emulador de sistema QEMU para x86.  
+[edk2-ovmf](https://archlinux.org/packages/?sort=&q=edk2-ovmf). Firmware para máquinas virtuais (x86_64, i686).  
+[qemu-audio-pa](https://archlinux.org/packages/?sort=&q=qemu-audio-pa). Driver de áudio QEMU PulseAudio.  
+[p7zip](https://archlinux.org/packages/extra/x86_64/p7zip/). Arquivador via CLI. Para descompactar o arquivo ISO baixado sem ter que montá-lo.   
+
 
 ## Versões do BlissOS:  
 
