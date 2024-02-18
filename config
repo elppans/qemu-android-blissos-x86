@@ -3,7 +3,7 @@
 # This option causes the BlissOS system image to be copied into the data file so that it can be booted.
 # Newer versions of the system do not use ramdisk.img and the default configuration causes an infinite boot error and does not recognize the data file, making it impossible to use the system.
 # When activated, ramdisk.img will be ignored. and BlissOS will be used inside the data.
-BLISSOSFS=enable
+#BLISSOSFS=enable
 
 # RAM in megabytes, defaults to 2048. (BlissOS min. 3072)
 RAM=4096
