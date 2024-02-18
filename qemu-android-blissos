@@ -31,14 +31,14 @@ nope() {
 }
 
 
-# Config file. Default is "$HOME/.config/android-x86/config"
-CONFIG="$HOME/.config/android-x86/blissos/config"
+# Config dir. Default is "$HOME/.config/android-x86"
+CONFIGDIR="$HOME/.config/android-x86/blissos"
 
 # Check for config file, source
-if [ -e $HOME/.config/android-x86/blissos/config ]; then
-	. $HOME/.config/android-x86/blissos/config
+if [ -e $CONFIGDIR/config ]; then
+	. $CONFIGDIR/config
 else
-	nope "Copy /usr/share/android-x86/config to ${HOME}/.config/android-x86 and modify.  It explains things."
+	nope "Copy /usr/share/android-x86/config to $CONFIGDIR and modify.  It explains things."
 fi
 
 # Set meaningful defaults
@@ -46,10 +46,11 @@ IN_SUDO=0
 IN_TERMINAL=0
 RAM=${RAM:-2048}
 CORES=${CORES:-2}
-DATA=${DATA:-"${HOME}/.config/android-x86/data.img"}
+DATA=${DATA:-"${CONFIGDIR}/data.img"}
 DATASIZE=${DATASIZE:-2048}
 CPU=${CPU:-"host"}
 NETPORT=${NETPORT:-47000}
+BLISSOSFS=${BLISSOSFS:-"disable"}
 # TODO figure out why GTK doesn't work on all my machines.  Might obviate the need to URXVT for serial console
 VGALINE=${VGALINE:-"-device virtio-vga-gl -display sdl,gl=on"}
 
@@ -81,6 +82,76 @@ if [ "$EFIBOOT" == "none" ]; then
 	echo "..."
 else
 	echo "..."
+fi
+
+# BlissOS Image System
+
+SYSTEMIMG_QEMULINE="-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw,readonly=on"
+
+if [ $BLISSOSFS == "enable" ]; then
+			echo "BlissOS File System Enabled"
+			sleep 3
+	if [ -d $DATA ]; then
+				SYSTEMIMG_BASE="$(basename ${SYSTEMIMG})"
+
+
+		if [ ! -e ${DATA}/${SYSTEMIMG_BASE} ]; then
+			if [ -e ${SYSTEMIMG} ]; then
+                rsync -ahv ${SYSTEMIMG} ${DATA}
+				mkdir -p ${DATA}/data
+			fi
+		fi
+			echo "9p mode selected."
+			IN_SUDO=1
+			SYSTEMIMG_QEMULINE="-virtfs local,id=data,path=${DATA},security_model=none,mount_tag=data"
+			DATA_CMDLINE="DATA=9p"
+			RAMDISK="none"
+			DATA="none"
+			# sudo should only be needed for 9p, if KVM is set up right
+			# so a data partition sparse file will always be owned by the calling user
+	else
+		if [ ! -e $DATA ]; then
+			if [ ! -w `dirname $DATA` ]; then
+				nope "Location for $DATA doesn't exist or isn't writeable."
+				sleep 3
+			fi
+
+			if [ $GUI -eq 1 ]; then
+				$URXVT -title "Android-x86 Data Partition Create" -e \
+					bash -c "mkdir -p ${CONFIGDIR}/data && \
+				/usr/bin/truncate -s ${DATASIZE}M ${DATA} && \
+				/usr/bin/mkfs.ext4 ${DATA} && \
+				echo The system image will be copied to the ${DATA} file. && \
+				echo You must authenticate with SUDO to proceed. && \
+				sleep 5 && \
+				sudo mount $DATA ${CONFIGDIR}/data && \
+				sudo mkdir -p ${CONFIGDIR}/data/data && \
+				sudo rsync -ahv ${SYSTEMIMG} ${CONFIGDIR}/data && \
+				sudo umount ${CONFIGDIR}/data && \
+				rm -rf ${CONFIGDIR}/data && \
+				echo && echo Hit ENTER to continue. && read"
+			else
+				mkdir -p ${CONFIGDIR}/data
+				/usr/bin/truncate -s ${DATASIZE}M $DATA
+				/usr/bin/mkfs.ext4 $DATA
+				echo "The system image will be copied to the $DATA file."
+				echo "You must authenticate with SUDO to proceed."
+				sleep 5
+				sudo mount $DATA ${CONFIGDIR}/data
+				sudo mkdir -p ${CONFIGDIR}/data/data
+				sudo rsync -ahv ${SYSTEMIMG} ${CONFIGDIR}/data
+				sudo umount ${CONFIGDIR}/data
+				rm -rf ${CONFIGDIR}/data
+			fi
+
+		elif [ ! -w $DATA ]; then
+			nope "Data partition $DATA isn't writeable."
+		fi
+			SYSTEMIMG="${DATA}"
+			SYSTEMIMG_QEMULINE="-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw"
+			RAMDISK="none"
+			DATA="none"
+	fi
 fi
 
 # RAMDisk image
@@ -153,8 +224,24 @@ fi
 #echo -e "CPU: $CPU\nRAM: $RAM\nCORES: $CORES\nDATA: $DATA\n"
 #echo -e "DATASIZE: $DATASIZE\nSERIAL: $SERIAL\nVIDEO: $VIDEO\n"
 #echo -e "VGALINE: $VGALINE\nBRIDGE: $BRIDGE"
+#echo -e "SYSTEMIMG_QEMULINE: $SYSTEMIMG_QEMULINE"
+#echo -e "RAMDISK_QEMULINE: $RAMDISK_QEMULINE"
+#echo -e "DATA_QEMULINE: $DATA_QEMULINE"
+#echo -e "RAMDISK_CMDLINE: $RAMDISK_CMDLINE"
+#echo -e "DATA_CMDLINE: $DATA_CMDLINE"
+#echo -e "VIDEO_CMDLINE: $VIDEO_CMDLINE"
 
+# APPEND OPTIONS
+# Android system boot options.
+# BlissOS uses different boot options than the default AndroidOS/LineageOS.
+# Older versions of BlissOS (14.x < 2023.03.11 or 15.x < 2023.04.01) support the default AndroidOS options, but newer versions need to use their own boot options.
 
+		# Generic AndroidOS:
+		#-append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE"
+		# BlissOS QEMU/KVM:
+		#-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE"
+		# BlissOS QEMU/KVM DEBUG:
+		#-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE" quiet DEBUG=2"
 
 do_qemu() {
 
@@ -170,56 +257,37 @@ do_qemu() {
 	[ $IN_SUDO -eq 1 ] && DO_CMD+="/usr/bin/sudo "
 	DO_CMD+=$QEMU
 
-#-bios /usr/share/ovmf/x64/OVMF.fd \ = Boot EFI, In Arch, depend extra/edk2-ovmf
-#-accel kvm \ ou -enable-kvm
-#-M q35 \
-#-append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 RAMDISK=vdb $DATA_CMDLINE $VIDEO_CMDLINE" # Configuração original
-#-append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE" # Generic AndroidOS
-#-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE" # BlissOS QEMU/KVM
-#-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE quiet DEBUG=2" # BlissOS QEMU/KVM DEBUG
-
-	#RAMDISK_QEMULINE="-drive index=1,if=virtio,id=ramdisk,file=${RAMDISK},format=raw,readonly=on"
-	#RAMDISK_CMDLINE="RAMDISK=vdb"
-
-#exec $DO_CMD -accel kvm \
-#    -smp $CORES \
-#    -M q35 \
-#    -m $RAM \
-#    -cpu $CPU \
-#    -bios /usr/share/ovmf/x64/OVMF.fd \
-#	-kernel $KERNEL \
-#	-initrd $INITRD \
-#	-append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE" \
-#	-device qemu-xhci,id=xhci0 -device usb-tablet,bus=xhci0.0 -machine vmport=off \
-#	-device intel-hda -device hda-duplex \
-#	-boot menu=on \
-#	-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw,readonly=on \
-#	$NET_QEMULINE $RAMDISK_QEMULINE $DATA_QEMULINE $SERIAL_QEMULINE $VGALINE
-
 args=(
 	##CPU
-	#"-enable-kvm"
-	"-accel kvm"
+	"-enable-kvm"
+	#"-accel kvm"
 	"-smp $CORES"
-    '-M q35'
+    "-M q35"
     "-m $RAM"
     "-cpu $CPU"
     "$EFIBOOT"
+	"-boot menu=on"
     ##GPU
     "$VGALINE"
     ##devices
-	-device qemu-xhci,id=xhci0
-	-device usb-tablet,bus=xhci0.0
-	-machine vmport=off
-	-device intel-hda
-	-device hda-duplex
-	-boot menu=on
-	"-device virtio-tablet"
-    "-device virtio-keyboard"
+    "-usb"
+    "-audiodev pa,id=snd0"
+    "-device AC97,audiodev=snd0"
+    #"-audiodev alsa,id=alsa0,out.connect-ports=Family,in.connect-ports=USB"
+    #"-device ich9-intel-hda -device hda-duplex,audiodev=alsa0"
+    #"-device ich9-intel-hda -device hda-duplex"
+    #"-device intel-hda -device hda-duplex"
+	#"-device qemu-xhci,id=xhci0"
+	#"-device usb-tablet,bus=xhci0.0"
+	#"-machine vmport=off"
+	#"-device virtio-tablet"
+    #"-device virtio-keyboard"
     ##net
     "$NET_QEMULINE"
     ##drives
-    "-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw,readonly=on"
+    #"-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw,readonly=on"
+    #"-drive index=0,if=virtio,id=system,file=$SYSTEMIMG,format=raw"
+    "$SYSTEMIMG_QEMULINE"
     "$RAMDISK_QEMULINE"
     "$DATA_QEMULINE"
     "-initrd $INITRD"
@@ -229,10 +297,10 @@ args=(
     "$SERIAL_QEMULINE"
 )
 
+
+
 exec $DO_CMD ${args[@]} \
 	  -append "root=/dev/ram0 androidboot.selinux=permissive console=ttyS0 $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE"
-	  #-append "root=/dev/ram0 console=ttyS0 HWC=drm_minigbm GRALLOC=minigbm_arcvm $RAMDISK_CMDLINE $DATA_CMDLINE $VIDEO_CMDLINE"
-
 }
 
 while [ $NETPORT -lt 48000 ]; do

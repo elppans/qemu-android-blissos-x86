@@ -1,3 +1,10 @@
+# BlissOS system inside the data file
+# https://blissos.org/
+# This option causes the BlissOS system image to be copied into the data file so that it can be booted.
+# Newer versions of the system do not use ramdisk.img and the default configuration causes an infinite boot error and does not recognize the data file, making it impossible to use the system.
+# When activated, ramdisk.img will be ignored. and BlissOS will be used inside the data.
+BLISSOSFS=enable
+
 # RAM in megabytes, defaults to 2048. (BlissOS min. 3072)
 RAM=4096
 
@@ -12,13 +19,6 @@ RAM=4096
 
 # "video=" string to pass to the kernel. Defaults to no string set.
 #VIDEO="1280x720x32"
-
-# EFI Boot
-#Is needed to tell Qemu to boot using UEFI,
-#which is necessary as right now there is a bug that prevents android-generic based roms from being installed when in legacy mode.
-#It is important to note that the location of this can vary depending on the host OS.
-#EFIBOOT="none"
-#EFIBOOT="-bios /usr/share/ovmf/x64/OVMF.fd"
 
 # Data partition location.
 # If a file is specified it will be a raw image and created if it does not
@@ -75,6 +75,13 @@ SERIAL="mon:stdio" # console on terminal or in urxvt if gui mode.
 # Example (default):
 #VGALINE="-vga virtio -display sdl,gl=on"
 VGALINE="-device virtio-vga-gl,edid=on -display sdl,gl=on,show-cursor=true"
+
+# EFI Boot
+# Is needed to tell Qemu to boot using UEFI,
+# which is necessary as right now there is a bug that prevents android-generic based roms from being installed when in legacy mode.
+# It is important to note that the location of this can vary depending on the host OS.
+#EFIBOOT="-bios /usr/share/ovmf/x64/OVMF.fd" # Default option
+#EFIBOOT="none"
 
 # Custom for r/w system images for BlissOS:
 SYSTEMIMG="$HOME/.config/android-x86/blissos/system.sfs"
