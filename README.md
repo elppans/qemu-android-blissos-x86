@@ -77,13 +77,21 @@ https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v14.10-x86_64-OFFI
 >https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.5-x86_64-OFFICIAL-gapps-20230308.iso  
 https://sourceforge.net/projects/blissos-dev/files/Beta/Bliss-v15.8.5-x86_64-OFFICIAL-foss-20230331.iso  
 
-Todas as versões de ISO maiores do que estes testados **NÃO** funcionaram.  
-O Bliss OS 16.x (Android 13) **NÃO** funcionou, nenhuma das versões.  
-Todas as versões que não funcionam ficam com BOOT INFINITO ou não reconhecem o arquivo data.  
+Todas as versões de ISO maiores do que estes testados **NÃO** funcionam com a configuração padrão.  
+Para funcionar, deve editar o arquivo `config` e ativar a variável **`BLISSOSFS`**:  
 
->Para usar a ÚLTIMA VERSÃO lançada do BlissOS, atualize apenas os arquivos **`kernel`** e **`system.sfs`**  
-**BlissOS 14.10.1 (13.01.2024) funcionou normalmente com este tipo de atualização**  
-**BlissOS 15.9 (14.01.2024) só funciona no 1º boot. A partir do 2º boot, ocorre "Boot Infinito"**  
+>BLISSOSFS=enable
+
+Ao ativar esta variável, será configurado automaticamente o arquivo **`data.img`** com o arquivo **`system.sfs`** e um diretório com o nome **`data`** dentro.  
+Para isso, o Script irá montar o arquivo **`data.img`** como um sistema de arquivos EXT4, então irá pedir para que seja usado a autenticação via **SUDO**.  
+Na próxima execução, o Script não pedirá o **SUDO** porque o arquivo **`data.img`** já existe e então não será necessário a reconfiguração.  
+
+>O BlissOS versão 16.x não usa mais o arquivo **system.sfs**, usa o arquivo **`system.efs`**.
+Para poder testar basta renomear o arquivo:
+
+```
+mv system.efs system.sfs
+```
 
 ## Sobre a configuracão do BlissOS:  
 
@@ -122,8 +130,9 @@ mv initrd.img kernel system.sfs ~/.config/android-x86/blissos
 cd ~/.config/android-x86/blissos
 curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/config
 curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos
+curl -JOLk https://raw.githubusercontent.com/elppans/qemu-android-blissos-x86/main/qemu-android-blissos.desktop
 sudo ln -sf qemu-android-blissos /usr/bin/qemu-android-blissos
-sudo cp qemu-android-blissos /usr/share/applications
+sudo cp qemu-android-blissos.desktop /usr/share/applications
 chmod +x qemu-android-blissos
 ```
 
